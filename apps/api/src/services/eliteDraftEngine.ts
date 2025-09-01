@@ -11,6 +11,30 @@
 
 import { createClient } from '@supabase/supabase-js'
 
+interface LeagueSettings {
+  league_type: string
+  scoring_categories: string[]
+}
+
+interface DraftState {
+  currentPick: number
+  availablePlayers: any[]
+  userPicks: any[]
+  allPicks: any[]
+}
+
+interface UserPreferences {
+  favorite_strategies?: string[]
+  risk_tolerance?: string
+  category_priorities?: Record<string, number>
+  draft_history?: any[]
+}
+
+interface OpponentProfile {
+  user_id: string
+  tendencies: any
+}
+
 interface MCPDraftContext {
   user_id: string
   league_settings: LeagueSettings
