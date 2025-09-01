@@ -87,7 +87,7 @@ export function PlayerRecommendations({ draftState, userStrategy, onPlayerSelect
     const fetchMCPRecommendations = async () => {
       setIsLoading(true)
       try {
-        const response = await fetch('/api/recommendations', {
+        const response = await fetch('/api/live-recommendations', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -138,10 +138,15 @@ export function PlayerRecommendations({ draftState, userStrategy, onPlayerSelect
         </div>
         <p className="text-purple-100">
           {mcpPowered ? 
-            `Elite MCP analytics with ${mcpRecommendations.length} live data sources` : 
+            `🚀 LIVE MCP: ${mcpRecommendations.length} recommendations • 8 servers active • Real-time data` : 
             `Powered by elite draft analytics for ${userStrategy.name}`
           }
         </p>
+        {mcpPowered && (
+          <div className="mt-2 text-xs text-green-300">
+            ⚡ Memory • 📡 Fetch • 🔍 Firecrawl • 💾 Database • Live NBA Stats
+          </div>
+        )}
       </div>
 
       {/* Top Recommendations */}
@@ -187,6 +192,31 @@ export function PlayerRecommendations({ draftState, userStrategy, onPlayerSelect
             <p className="text-purple-100 text-sm mb-4 italic">
               "{rec.reasoning}"
             </p>
+            
+            {/* MCP Insights */}
+            {mcpPowered && rec.mcp_insights && (
+              <div className="mb-4 p-3 bg-green-900/20 border border-green-500/30 rounded-lg">
+                <div className="text-xs text-green-300 mb-2 font-semibold">🚀 LIVE MCP INSIGHTS</div>
+                <div className="grid grid-cols-2 gap-2 text-xs">
+                  <div>
+                    <span className="text-green-400">Injury Risk:</span>
+                    <span className="text-white ml-1">{(rec.mcp_insights.injury_risk * 100).toFixed(1)}%</span>
+                  </div>
+                  <div>
+                    <span className="text-green-400">Breakout:</span>
+                    <span className="text-white ml-1">{(rec.mcp_insights.breakout_probability * 100).toFixed(1)}%</span>
+                  </div>
+                  <div>
+                    <span className="text-green-400">News Sentiment:</span>
+                    <span className="text-white ml-1">{(rec.mcp_insights.recent_news_sentiment * 100).toFixed(0)}%</span>
+                  </div>
+                  <div>
+                    <span className="text-green-400">Expert Consensus:</span>
+                    <span className="text-white ml-1">{(rec.mcp_insights.expert_consensus * 100).toFixed(0)}%</span>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* Projected Stats Preview */}
             <div className="grid grid-cols-4 gap-2 mb-4">
