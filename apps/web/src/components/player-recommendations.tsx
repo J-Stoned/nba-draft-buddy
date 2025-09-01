@@ -1,7 +1,7 @@
 'use client'
 
 import { DraftState, UserStrategy } from './draft-assistant'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 interface PlayerRecommendationsProps {
   draftState: DraftState
@@ -74,10 +74,53 @@ const mockRecommendations = [
 
 export function PlayerRecommendations({ draftState, userStrategy, onPlayerSelect }: PlayerRecommendationsProps) {
   const [selectedPlayer, setSelectedPlayer] = useState<any>(null)
+  const [mcpRecommendations, setMcpRecommendations] = useState<any[]>([])
+  const [isLoading, setIsLoading] = useState(false)
+  const [mcpPowered, setMcpPowered] = useState(false)
 
   const handlePlayerClick = (player: any) => {
     setSelectedPlayer(selectedPlayer?.player_id === player.player_id ? null : player)
   }
+
+  // Fetch MCP-powered recommendations
+  useEffect(() => {
+    const fetchMCPRecommendations = async () => {
+      setIsLoading(true)
+      try {
+        const response = await fetch('/api/recommendations', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            userId: 'demo-user',
+            leagueSettings: {
+              league_type: userStrategy.strategy_type,
+              scoring_categories: Object.keys(userStrategy.category_weights)
+            },
+            draftState: {
+              currentPick: draftState.currentPick,
+              availablePlayers: draftState.availablePlayers,
+              userPicks: draftState.userPicks,
+              allPicks: draftState.allPicks
+            }
+          })
+        })
+        
+        if (response.ok) {
+          const data = await response.json()
+          if (data.success) {
+            setMcpRecommendations(data.recommendations)
+            setMcpPowered(true)
+            console.log('🚀 MCP Recommendations Loaded:', data.analytics)
+          }
+        }
+      } catch (error) {
+        console.warn('MCP recommendations unavailable, using fallback:', error)
+      }
+      setIsLoading(false)
+    }
+    
+    fetchMCPRecommendations()
+  }, [draftState.currentPick, userStrategy.strategy_type])
 
   const handleDraftPlayer = (player: any) => {
     onPlayerSelect(draftState.currentPick, player)
@@ -88,15 +131,22 @@ export function PlayerRecommendations({ draftState, userStrategy, onPlayerSelect
     <div className="space-y-6">
       {/* AI Recommendations Header */}
       <div className="recommendation-card p-6 rounded-lg text-center">
-        <h2 className="text-2xl font-bold text-white mb-2">🤖 AI Recommendations</h2>
+        <div className="flex items-center justify-center space-x-2 mb-2">
+          <h2 className="text-2xl font-bold text-white">🤖 AI Recommendations</h2>
+          {mcpPowered && <span className="px-2 py-1 bg-green-500 text-white text-xs rounded font-bold">MCP POWERED</span>}
+          {isLoading && <span className="px-2 py-1 bg-yellow-500 text-black text-xs rounded font-bold">ANALYZING...</span>}
+        </div>
         <p className="text-purple-100">
-          Powered by elite draft analytics for {userStrategy.name}
+          {mcpPowered ? 
+            `Elite MCP analytics with ${mcpRecommendations.length} live data sources` : 
+            `Powered by elite draft analytics for ${userStrategy.name}`
+          }
         </p>
       </div>
 
       {/* Top Recommendations */}
       <div className="space-y-4">
-        {mockRecommendations.map((rec, index) => (
+        {(mcpPowered && mcpRecommendations.length > 0 ? mcpRecommendations : mockRecommendations).map((rec, index) => (
           <div key={rec.player_id} className="player-card p-4 rounded-lg">
             <div className="flex items-start justify-between mb-3">
               <div className="flex items-center space-x-3">
