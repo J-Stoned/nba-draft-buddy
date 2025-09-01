@@ -1,0 +1,37 @@
+{
+  "name": "@nba-draft-buddy/api",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --port 3001",
+    "build": "next build",
+    "start": "next start --port 3001",
+    "test": "vitest",
+    "test:watch": "vitest --watch",
+    "lint": "eslint . --max-warnings 0",
+    "type-check": "tsc --noEmit",
+    "clean": "rm -rf .next dist coverage",
+    "db:refresh": "curl -X POST http://localhost:3001/api/data/refresh -H \"Authorization: Bearer dev-key\"",
+    "test:engine": "curl http://localhost:3001/api/test/draft-engine"
+  },
+  "dependencies": {
+    "next": "^14.1.0",
+    "@trpc/server": "^10.45.0",
+    "@trpc/client": "^10.45.0",
+    "@trpc/react-query": "^10.45.0",
+    "@trpc/next": "^10.45.0",
+    "@supabase/supabase-js": "^2.39.0",
+    "@upstash/redis": "^1.28.0",
+    "superjson": "^2.2.0",
+    "zod": "^3.22.0",
+    "typescript": "^5.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/react": "^18.2.0",
+    "vitest": "^1.2.0",
+    "eslint": "^8.56.0",
+    "@typescript-eslint/eslint-plugin": "^6.19.0",
+    "@typescript-eslint/parser": "^6.19.0"
+  }
+}

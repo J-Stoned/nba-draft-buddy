@@ -1,0 +1,7 @@
+{
+  "framework": "nextjs",
+  "rootDirectory": "apps/api",
+  "env": {
+    "NODE_ENV": "production"
+  }
+}
