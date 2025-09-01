@@ -1,0 +1,62 @@
+{
+  "mcpServers": {
+    "memory": {
+      "command": "node",
+      "args": ["C:\\Users\\st0ne\\NBA Draft Buddy\\mcp-servers\\src\\memory\\dist\\index.js"],
+      "env": {},
+      "description": "Stores user preferences, draft history, and league settings"
+    },
+    "fetch": {
+      "command": "node", 
+      "args": ["C:\\Users\\st0ne\\NBA Draft Buddy\\mcp-servers\\src\\fetch\\dist\\index.js"],
+      "env": {},
+      "description": "Web content fetching for NBA stats and player data"
+    },
+    "firecrawl": {
+      "command": "npx",
+      "args": ["firecrawl-mcp"],
+      "env": {
+        "FIRECRAWL_API_KEY": "your_api_key_here"
+      },
+      "description": "Advanced web scraping for NBA websites and stats"
+    },
+    "eslint": {
+      "command": "npx",
+      "args": ["@eslint/mcp"],
+      "env": {
+        "PROJECT_ROOT": "C:\\Users\\st0ne\\NBA Draft Buddy"
+      },
+      "description": "Code quality optimization and linting"
+    },
+    "filesystem": {
+      "command": "node",
+      "args": ["C:\\Users\\st0ne\\NBA Draft Buddy\\mcp-servers\\src\\filesystem\\dist\\index.js"],
+      "env": {
+        "ALLOWED_PATHS": "C:\\Users\\st0ne\\NBA Draft Buddy"
+      },
+      "description": "File system access for data import/export and logs"
+    },
+    "git": {
+      "command": "node",
+      "args": ["C:\\Users\\st0ne\\NBA Draft Buddy\\mcp-servers\\src\\git\\dist\\index.js"],
+      "env": {
+        "GIT_REPOSITORY": "C:\\Users\\st0ne\\NBA Draft Buddy"
+      },
+      "description": "Git operations for code version control"
+    },
+    "google-maps": {
+      "command": "npx",
+      "args": ["mcp-google-maps"],
+      "env": {
+        "GOOGLE_MAPS_API_KEY": "your_api_key_here"
+      },
+      "description": "Location data for NBA teams and arenas"
+    },
+    "everything": {
+      "command": "node",
+      "args": ["C:\\Users\\st0ne\\NBA Draft Buddy\\mcp-servers\\src\\everything\\dist\\index.js"],
+      "env": {},
+      "description": "Multi-purpose server with various utilities"
+    }
+  }
+}

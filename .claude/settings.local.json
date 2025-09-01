@@ -10,7 +10,11 @@
       "Bash(npm run dev:*)",
       "Bash(git init:*)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "WebSearch",
+      "Bash(psql:*)",
+      "Bash(git clone:*)",
+      "Bash(npm install:*)"
     ],
     "deny": [],
     "ask": []
